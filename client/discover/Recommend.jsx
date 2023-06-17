@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, Image, SafeAreaView, StyleSheet, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { mockData } from '../sharedComponents/mockData.js';
+import axios from 'axios';
 
 import tw from 'tailwind-react-native-classnames'
 
@@ -10,14 +11,19 @@ const Recommend = ({route, navigation}) => {
   const [rec, setRec] = useState(leagues);
   const { selected } = route.params
 
-  useEffect(() => {
-    if (selected.length) {
-      const filteredLeagues = leagues.filter(league =>
-        selected.includes(league.sport)
-        )
-        setRec(filteredLeagues)
-      }
-  }, [route])
+  var config = {
+    method: 'get',
+    url: 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&key=AIzaSyCNTRLS8gSab94YId9HJwKG7EE46Bs1-vc',
+    headers: { }
+  };
+
+  axios(config)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
   return (
     <LinearGradient style={[styles.gradient]} colors={["#272838", "rgba(206, 185, 146, 0.35)"]}>
