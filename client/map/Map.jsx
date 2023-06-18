@@ -20,7 +20,7 @@ export default function LeagueMap({ navigation, route }) {
 
   function findCurrentLeague(currentID) {
     for (let i = 0; i < rec.length; i++) {
-      if (rec[i].id === currentID) {
+      if (rec[i].place_id === currentID) {
         return rec[i];
       }
     }
@@ -62,7 +62,7 @@ export default function LeagueMap({ navigation, route }) {
       >
         {rec.map((league) => (
           <CustomMarker
-            key={league.id}
+            key={league.place_id}
             league={league}
             displayID={displayID}
             setDisplayID={setDisplayID}

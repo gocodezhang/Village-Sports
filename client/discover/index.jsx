@@ -15,11 +15,6 @@ const interests = [
     category: 'Games',
     items: ['Video Games', 'Board Games', 'Chess', 'Puzzles'],
   },
-  {
-    id: 3,
-    category: 'Art',
-    items: ['Painting', 'Drawing', 'Photography', 'Sculpture'],
-  },
 ];
 
 

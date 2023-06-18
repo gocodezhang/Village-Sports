@@ -54,22 +54,22 @@ const styles = StyleSheet.create({
 function LeagueCard({ navigation, currentLeague }) {
   return (
     <View style={styles.card}>
-      <Image style={styles.logo} source={{
+      {/* <Image style={styles.logo} source={{
           uri: currentLeague.picture,
         }}
-      />
+      /> */}
       <View style={styles.textContainer}>
         <Text style={styles.text}>
           <Text style={styles.header}>League: </Text>
           {currentLeague.name}
         </Text>
-        <Text style={styles.text}>
+        {/* <Text style={styles.text}>
           <Text style={styles.header}>Type: </Text>
           {currentLeague.sport}
-        </Text>
+        </Text> */}
         <Text style={styles.text}>
           <Text style={styles.header}>Address: </Text>
-          {currentLeague.address}
+          {currentLeague.formatted_address}
         </Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={() => (navigation.navigate('League', { league: currentLeague }))}>
