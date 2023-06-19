@@ -3,7 +3,7 @@ import { Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import LinearView from '../sharedComponents/LinearView.jsx';
 import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 import { useIsFocused } from '@react-navigation/native';
-import { db } from '../../firebase';
+import { mockData } from '../sharedComponents/mockData.js';
 
 
 import LeagueCard from './LeagueCard.jsx';
@@ -26,63 +26,15 @@ export default function Home({ navigation }) {
     setAnnouncements(announce);
   }
 
-  useEffect(() => {
-    if(isFocused){
-      db.collection('mockusers').where('username', '==', username).get()
-      .then((query) => {
-        const doc = query.docs[0];
-        if (!doc.exists) {
-          console.log('Document does not exist');
-        } else {
-          const data = doc.data();
-
-          const teams = JSON.parse(data.teams); // obj with {league: team, league: team...}
-          const userLeagues = Array.from(Object.keys(teams));
-          const userLeaguesAndTeams = [];
-          // grab the league each user is part of out of db, and find the specific team info
-          userLeagues.forEach((leagueName) => {
-            db.collection('mockLeagues').where('name', '==', leagueName).get()
-              .then((query) => {
-                const doc = query.docs[0];
-                if (!doc.exists) {
-                  console.log('Document does not exits!')
-                } else {
-                  const data = doc.data();
-                  const allTeams = data.teams.map((team) => (JSON.parse(team)))
-                  allTeams.forEach((team) => {
-                    if (team.name === teams[leagueName]) {
-                      userLeaguesAndTeams.push(
-                        {
-                          leagueName: leagueName,
-                          teamInfo: team
-                        }
-                      )
-                    }
-                  });
-                  setUsersLeagues(userLeaguesAndTeams);
-                  return userLeaguesAndTeams;
-                }
-              })
-                .then((leagues) => {
-                  getAnnouncements(leagues)
-                })
-                .catch((err) => console.log(err));
-          });
-        }
-      })
-        .catch((err) => (console.log(err)));
-    }
-  }, [isFocused]);
-
   return (
     <LinearView>
       <Text style={styles.myLeagues}>My Leagues</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} bounces={false} style={styles.carousel}>
-        {usersLeagues.map((league => <LeagueCard league={league} key={league.id}/>))}
+        {usersLeagues.length === 0 ? null : usersLeagues.map((league => <LeagueCard league={league} key={league.id}/>))}
       </ScrollView>
         <Text style={styles.myLeagues}>Announcements</Text>
       <ScrollView style={styles.announcementContainer}>
-        {announcements.map((announcement, i) => <Announcements teamName={announcement.teamName} announceList={announcement.announcements} key={i}/>)}
+        {announcements.length === 0 ? null : announcements.map((announcement, i) => <Announcements teamName={announcement.teamName} announceList={announcement.announcements} key={i}/>)}
       </ScrollView>
       <Pressable style={styles.button} onPress={() =>
           navigation.navigate('Discover')

@@ -31,21 +31,6 @@ export default function App() {
   const [username, setUsername] = useState(null);
   const [leagues, setLeagues] = useState([]);
 
-  useEffect(() => {
-    const tempArr = [];
-    db.collection('mockLeagues').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((documentSnapshot) => {
-          tempArr.push(documentSnapshot.data());
-        });
-        return tempArr;
-      })
-      .then((resultArr) => {
-        setLeagues(resultArr);
-      })
-      .catch((err) => (console.log(err)));
-  }, []);
-
   return (
 
     <UsernameContext.Provider value={{username, setUsername, leagues, setLeagues}}>

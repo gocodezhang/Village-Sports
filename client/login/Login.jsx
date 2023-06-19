@@ -58,7 +58,8 @@ const Login = ({navigation, route}) => {
   const handleLogin = async () => {
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((result) => {
+        console.log(result);
         getUsernameByEmail(email);
       })
       .catch(err => alert(err.message))

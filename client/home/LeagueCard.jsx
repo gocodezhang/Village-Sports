@@ -11,7 +11,7 @@ export default function LeagueCard({ league }) {
       <Text style={styles.teamName}>{league.teamInfo.name}</Text>
 
       <ScrollView style={styles.infoCard}>
-        {league.teamInfo.events.map((event, i) => <EventInfo event={event} key={i}/>)}
+        {league.teamInfo.events.map((event, i) => (<EventInfo event={event} key={i} />))}
       </ScrollView>
     </View>
   )
