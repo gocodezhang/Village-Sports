@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Image, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { db, auth } from '../../firebase';
+import { auth } from '../../firebase';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import LinearView from '../sharedComponents/LinearView.jsx';
 import Logo from '../../assets/VillageSportsLogo.png';
 
-const SignUp = ({ navigation, route }) => {
+function SignUp({ navigation, route }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,21 +14,12 @@ const SignUp = ({ navigation, route }) => {
   const { setUser } = route.params;
 
   const handleSignUp = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        db.collection('usernames').add({
-            email: email,
-            username: username,
-          })
-            .then(() => {
-              setUser(username);
-              console.log('user data saved successfull!');
-            })
-            .catch(err => alert(err.message));
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        console.log(result);
       })
       .catch(err => alert(err.message));
-  }
+  };
 
   return (
     <LinearView>
