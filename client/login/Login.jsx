@@ -2,67 +2,24 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Image, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { db, auth } from '../../firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
 import LinearView from '../sharedComponents/LinearView.jsx';
 import Logo from '../../assets/VillageSportsLogo.png';
-import { useRoute } from '@react-navigation/native';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 
-const Login = ({navigation, route}) => {
-  /**
-   * Seeding function
-   */
+//jayz1995@gmail.com
 
-  // const mockNames = ['sharkieOWO','sharkieUWU','Fred','Joe','Bob','Sally','Ole','Mart','Jesus','Kieran','Amy','Alex','Rachel','Maggie','Karen','Jessica','Yolanda','Maria','William','Matt','James','Alexander','Kelvin','Van','Ian','Mack','Michael','Matthew','Matias','Anders','Bose','Albert','Maxwell','Ludwig','Paul','Nate','Chris','Duane','Cap','Tony','Tucker','Milo','Max','Xavier','Caleb','Silas','Asher','Benji','Tyrone','Dan','Michelle','Finn','Troy','Chad','Damian','Sahid','Chad','Chadius','Chadd','David','Ryan','Tyler','Chris','Thomas','Josh','Dota','Fox','Chen','Mag','Sandy','Jamal','Andrew','Angelica','Shannon','Peter','Jay','MJ','Erving','Colby','Shaqira','Spud','Ron','Meta','Patrick','Larry','Dennis']
-
-  // const seedDB = () => {
-  //   for (let i = 2; i < mockNames.length; i++) {
-  //     const currentName = mockNames[i];
-  //     db.collection('mockusers').add({
-  //       id: i,
-  //       username: currentName,
-  //       info: '{ "about_me":"lorem ipsum", "sobriquet":"more lorem ipsum",   "interests":"random stuff", "level":"genin" }',
-  //       profile_pic: 'https://images.unsplash.com/photo-1685195154261-c8167ca7f88c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=700&q=60',
-  //       teams: '{"Elite eSports League (EEL)":"Nebula Nexus (LoL)"}',
-  //       wishlist: [],
-  //     })
-  //   }
-  // }
-
-  /**
-   * Seeding Function
-   */
-
-
+function Login({ navigation, route }) {
+  const { setUserID } = useContext(UsernameContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { setUser } = route.params;
-
-  const getUsernameByEmail = async (email) => {
-    try {
-      const querySnapshot = await db.collection('usernames').where('email', '==', email).get();
-
-      if (!querySnapshot.empty) {
-        const document = querySnapshot.docs[0]
-        const userData = document.data();
-        const username = userData.username;
-        setUser(username);
-        console.log('username is', username);
-      } else {
-        console.error('Error querying user data:', error);
-      }
-    } catch (error) {
-      console.error('Error querying user data:', error);
-    }
-  }
-
-  const handleLogin = async () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
+  function handleLogin() {
+    signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        console.log(result);
-        getUsernameByEmail(email);
+        setUserID(result.user.uid);
       })
-      .catch(err => alert(err.message))
+      .catch((err) => (console.log(err.message)));
   }
 
   return (

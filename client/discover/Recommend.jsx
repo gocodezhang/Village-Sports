@@ -12,7 +12,7 @@ function Recommend({ route, navigation }) {
   useEffect(() => {
     const keywords = selected.join(' leagues or ');
     console.log(`local ${keywords} leagues in zipcode 95035`);
-    const url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
+    const url = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
     const params = {
       query: `local ${keywords} leagues in zipcode 95035`,
       radius: 5000,
@@ -21,6 +21,7 @@ function Recommend({ route, navigation }) {
 
     axios.get(url, { params })
       .then((response) => {
+        console.log(response.data.results);
         setRec(response.data.results);
       })
       .catch((error) => {
@@ -32,7 +33,7 @@ function Recommend({ route, navigation }) {
     <LinearView>
       <ScrollView>
         {rec.map((league) => (
-          <RecommendCard league={league} navigation={navigation} />
+          <RecommendCard league={league} key={league.place_id} navigation={navigation} />
         ))}
         <TouchableOpacity onPress={() => navigation.navigate('map', { rec })} style={styles.button}>
           <Text>Map View</Text>

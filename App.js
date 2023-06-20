@@ -10,8 +10,6 @@ import { HeaderBackButton } from '@react-navigation/elements';
 
 import Login from './client/login/Login.jsx';
 import SignUp from './client/login/SignUp.jsx';
-import DiscoverDemo from './client/login/discoverDemo/indexDemo.jsx';
-import RecommendDemo from './client/login/discoverDemo/RecommendDemo.jsx';
 
 import HomeScreen from './client/home/HomeScreen.jsx';
 import Discover from './client/discover/index.jsx';
@@ -28,21 +26,19 @@ import { db } from './firebase';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [username, setUsername] = useState(null);
+  const [userID, setUserID] = useState('');
   const [leagues, setLeagues] = useState([]);
 
   return (
 
-    <UsernameContext.Provider value={{username, setUsername, leagues, setLeagues}}>
+    <UsernameContext.Provider value={{userID, setUserID, leagues, setLeagues}}>
       <NavigationContainer>
         <Stack.Navigator>
           {
-            !username ? (
+            !userID ? (
               <>
-                <Stack.Screen name="Login" component={Login} initialParams={{ setUser: setUsername }} options={{ headerShown: false }} />
-                <Stack.Screen name="SignUp" component={SignUp} initialParams={{ setUser: setUsername }} options={{ headerShown: false }} />
-                <Stack.Screen name="Discover" component={DiscoverDemo} options={{ headerTitle: NavStackHeader, headerTintColor: '#ffffff', headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 } }} />
-                <Stack.Screen name="Recommend" component={RecommendDemo} options={{ headerTitle: NavStackHeader, headerTintColor: '#ffffff', headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 } }} />
+                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
               </>
             ) : (
               <>

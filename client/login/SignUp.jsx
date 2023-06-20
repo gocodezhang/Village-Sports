@@ -1,24 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Image, TouchableOpacity, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from '../../firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import LinearView from '../sharedComponents/LinearView.jsx';
 import Logo from '../../assets/VillageSportsLogo.png';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 
 function SignUp({ navigation, route }) {
+  const { setUserID } = useContext(UsernameContext);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { setUser } = route.params;
-
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        console.log(result);
+        setUserID(result.user.uid);
+        return result.user.uid;
       })
-      .catch(err => alert(err.message));
+      .then((uid) => (
+        addDoc(collection(db, 'users'), {
+          uid,
+          name: username,
+          location: {},
+          aboutMe: '',
+          interests: [],
+          currentLeagues: [],
+          wishList: [],
+          picture: '',
+        })
+      ))
+      .then(() => (console.log('added user in DB')))
+      .catch((err) => (console.log(err)));
   };
 
   return (
