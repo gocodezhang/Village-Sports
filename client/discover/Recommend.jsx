@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, TouchableOpacity, StyleSheet, } from 'react-native';
-import LinearView from '../sharedComponents/LinearView.jsx';
+import { Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import Constants from 'expo-constants';
+import LinearView from '../sharedComponents/LinearView.jsx';
 import RecommendCard from './RecommendCard.jsx';
 
 function Recommend({ route, navigation }) {

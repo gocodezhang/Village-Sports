@@ -15,7 +15,7 @@ import teams from '../sharedComponents/mockTeams.jsx';
 export default function Home({ navigation }) {
   const [usersLeagues, setUsersLeagues] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const { userID } = useContext(UsernameContext);
+  const { userID, setUserProfile } = useContext(UsernameContext);
   const isFocused = useIsFocused();
 
   function getAnnouncements(leagues) {
@@ -33,6 +33,7 @@ export default function Home({ navigation }) {
     getDocs(q)
       .then((querySnapshot) => {
         const user = querySnapshot.docs[0].data();
+        setUserProfile(user);
         const { currentLeagues } = user;
 
         const url = 'https://maps.googleapis.com/maps/api/place/details/json';

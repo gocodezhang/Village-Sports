@@ -7,11 +7,10 @@ import LeaguesSaved from '../wishList/LeaguesSaved.jsx';
 import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 
 export default function TempWatchList({ navigation }) {
-  const { leagues } = useContext(UsernameContext);
 
   return (
     <LinearView>
-      <LeaguesSaved navigation={navigation} wishList={leagues} />
+      <LeaguesSaved navigation={navigation} wishList={[]} />
     </LinearView>
   );
 }

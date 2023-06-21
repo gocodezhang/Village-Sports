@@ -27,11 +27,11 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [userID, setUserID] = useState('');
-  const [leagues, setLeagues] = useState([]);
+  const [userProfile, setUserProfile] = useState({});
 
   return (
 
-    <UsernameContext.Provider value={{userID, setUserID, leagues, setLeagues}}>
+    <UsernameContext.Provider value={{userID, setUserID, userProfile, setUserProfile}}>
       <NavigationContainer>
         <Stack.Navigator>
           {

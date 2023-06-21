@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import CustomMarker from './CustomMarker.jsx';
 import LeagueCard from './LeagueCard.jsx';
-import { mockData } from '../sharedComponents/mockData.js';
 
 export default function LeagueMap({ navigation, route }) {
   const [displayID, setDisplayID] = useState('');
