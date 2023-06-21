@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, ScrollView, TouchableOpacity, StyleSheet, } from 'react-native';
 import LinearView from '../sharedComponents/LinearView.jsx';
-import RecommendCard from './RecommendCard.jsx';
 import axios from 'axios';
-
+import Constants from 'expo-constants';
+import RecommendCard from './RecommendCard.jsx';
 
 function Recommend({ route, navigation }) {
   const [rec, setRec] = useState([]);
@@ -16,7 +16,7 @@ function Recommend({ route, navigation }) {
     const params = {
       query: `local ${keywords} leagues in zipcode 95035`,
       radius: 5000,
-      key: 'AIzaSyCNTRLS8gSab94YId9HJwKG7EE46Bs1-vc',
+      key: Constants.expoConfig.extra.googleKey,
     };
 
     axios.get(url, { params })

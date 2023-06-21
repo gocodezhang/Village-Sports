@@ -1,36 +1,67 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import axios from 'axios';
+import Constants from 'expo-constants';
+import { db } from '../../firebase';
 import LinearView from '../sharedComponents/LinearView.jsx';
 import UsernameContext from '../sharedComponents/UsernameContext.jsx';
-import { useIsFocused } from '@react-navigation/native';
-import { mockData } from '../sharedComponents/mockData.js';
-
 
 import LeagueCard from './LeagueCard.jsx';
 import Announcements from './Announcements.jsx';
-import ProfileButton from '../profile/profileButton.jsx'
+import teams from '../sharedComponents/mockTeams.jsx';
 
 export default function Home({ navigation }) {
   const [usersLeagues, setUsersLeagues] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const { username } = useContext(UsernameContext);
+  const { userID } = useContext(UsernameContext);
   const isFocused = useIsFocused();
 
   function getAnnouncements(leagues) {
     const announce = leagues.map((league) => (
       {
         teamName: league.leagueName,
-        announcements: league.teamInfo.announcements
+        announcements: league.teamInfo.announcements,
       }
     ));
     setAnnouncements(announce);
   }
 
+  useEffect(() => {
+    const q = query(collection(db, 'users'), where('uid', '==', userID));
+    getDocs(q)
+      .then((querySnapshot) => {
+        const user = querySnapshot.docs[0].data();
+        const { currentLeagues } = user;
+
+        const url = 'https://maps.googleapis.com/maps/api/place/details/json';
+        return Promise.all(currentLeagues.map((place_id) => {
+          const params = {
+            place_id,
+            key: Constants.expoConfig.extra.googleKey,
+            fields: 'name,formatted_address,geometry,place_id,formatted_phone_number,opening_hours,website,rating,user_ratings_total',
+          };
+          return axios.get(url, { params });
+        }));
+      })
+      .then((results) => {
+        const leagues = results.map((result, i) => {
+          const league = result.data.result;
+          league.teamInfo = teams[i];
+          return league;
+        });
+        setUsersLeagues(leagues);
+        getAnnouncements(leagues);
+      })
+      .catch((err) => (console.log(err)));
+  }, []);
+
   return (
     <LinearView>
       <Text style={styles.myLeagues}>My Leagues</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} bounces={false} style={styles.carousel}>
-        {usersLeagues.length === 0 ? null : usersLeagues.map((league => <LeagueCard league={league} key={league.id}/>))}
+        {usersLeagues.length === 0 ? null : usersLeagues.map((league => <LeagueCard league={league} key={league.place_id}/>))}
       </ScrollView>
         <Text style={styles.myLeagues}>Announcements</Text>
       <ScrollView style={styles.announcementContainer}>

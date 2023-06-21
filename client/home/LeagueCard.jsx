@@ -6,7 +6,7 @@ export default function LeagueCard({ league }) {
   return (
     <View style={styles.container}>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={styles.leagueName}>{league.leagueName}</Text>
+        <Text style={styles.leagueName}>{league.name}</Text>
       </View>
       <Text style={styles.teamName}>{league.teamInfo.name}</Text>
 
@@ -14,7 +14,7 @@ export default function LeagueCard({ league }) {
         {league.teamInfo.events.map((event, i) => (<EventInfo event={event} key={i} />))}
       </ScrollView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
