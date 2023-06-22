@@ -21,7 +21,6 @@ function Recommend({ route, navigation }) {
 
     axios.get(url, { params })
       .then((response) => {
-        console.log(response.data.results);
         setRec(response.data.results);
       })
       .catch((error) => {
