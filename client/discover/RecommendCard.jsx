@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 function RecommendCard({ league, navigation }) {
   return (
-    <TouchableOpacity key={league.place_id} style={styles.container}>
+    <TouchableOpacity key={league.place_id} style={styles.container} onPress={() => (navigation.navigate('League', { league }))}>
       <Text style={styles.headerText}>
         {league.name}
       </Text>

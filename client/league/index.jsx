@@ -5,7 +5,7 @@ import LeagueView from './view.jsx'
 const League = ({route, navigation}) => {
 
   return (
-    <LeagueView leagues={route.params.league} navigation={navigation} />
+    <LeagueView league={route.params.league} navigation={navigation} />
   );
 };
 

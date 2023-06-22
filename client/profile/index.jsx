@@ -1,28 +1,25 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Button, Image, TouchableOpacity, Text, View, TextInput, StyleSheet } from 'react-native';
-import LinearView from '../sharedComponents/LinearView.jsx'
-import { useIsFocused } from '@react-navigation/native'
-import { db } from '../../firebase.js';
-import UsernameContext from '../sharedComponents/UsernameContext.jsx'
-
-
+import React, { useContext } from 'react';
+import LinearView from '../sharedComponents/LinearView.jsx';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
+import ProfilePicture from './ProfilePicture.jsx';
+import Interest from './Interest.jsx';
+import AboutMe from './AboutMe.jsx';
 
 function Profile() {
   const { userProfile } = useContext(UsernameContext);
-
+  console.log(userProfile);
   return (
     <LinearView>
-      <Image style={styles.image} source={{ uri: userProfile.picture }} />
-      <Text>testing</Text>
+      {Object.keys(userProfile).length === 0 ? null
+        : (
+          <>
+            <ProfilePicture picture={userProfile.picture} name={userProfile.name} />
+            <Interest interests={userProfile.interests} />
+            <AboutMe aboutMe={userProfile.aboutMe} />
+          </>
+        )}
     </LinearView>
   );
 }
-
-const styles = StyleSheet.create({
-  image: {
-    width: 50,
-    height: 50,
-  },
-});
 
 export default Profile;

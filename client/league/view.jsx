@@ -4,7 +4,8 @@ import tw from 'tailwind-react-native-classnames';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const LeagueView = ({ leagues, navigation }) => {
+
+function LeagueView({ league, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [members, setMembers] = useState([]);
   const [event, setEvents] = useState([]);
@@ -13,80 +14,28 @@ const LeagueView = ({ leagues, navigation }) => {
     <LinearGradient style={[styles.gradient]} colors={["#272838", "rgba(206, 185, 146, 0.35)"]}>
       <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Text style={tw`text-center text-white text-2xl`}>{leagues.name}</Text>
-        <Image
+        <Text style={tw`text-center text-white text-2xl`}>{league.name}</Text>
+        {/* <Image
           style={{ width: '75%', height: '15%', margin: '5%' }}
-          source={{ uri: `${leagues.picture}` }}
-        />
+          source={{ uri: `${league.picture}` }}
+        /> */}
         <View>
           <TouchableOpacity style={styles.appButtonContainer} onPress={() =>
           navigation.navigate('chat')}>
             <Text style={tw`border-b border-gray-300 py-2 text-center text-white`}>Chat/Join League</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.appButtonContainer}>
-            <Text style={tw`border-b border-gray-300 py-2 text-center text-white`}>Add to Saved Leagues</Text>
+            <Text style={tw`border-b border-gray-300 py-2 text-center text-white`}>Add to Saved league</Text>
           </TouchableOpacity>
           <View style={{ backgroundColor: '#FFFFFF50', borderRadius: '10', padding: '5%' }} >
             <Text style={tw`text-center text-white text-lg`}>League Details</Text>
-            <Text style={{ color: 'white', fontSize: 18 }} >Name: {leagues.name}</Text>
+            <Text style={{ color: 'white', fontSize: 18 }} >Name: {league.name}</Text>
             <Text style={{ color: 'white', fontSize: 18 }} >Teams:</Text>
-            {leagues.teams.map((team, index) => (
-              //setMembers(team.members),
-
-              <View key={index}>
-                <TouchableOpacity onPress={() => setModalVisible(true)} style={{
-                  color: 'white', marginLeft: 30, elevation: 10,
-                  backgroundColor: "#FFFFFF55",
-                  borderRadius: 20,
-                  paddingVertical: 10,
-                  paddingHorizontal: 12,
-                  margin: 10
-                }
-                }>
-                  <Text style={{
-                  fontSize: 13,
-                  color: "#fff",
-                  fontWeight: "bold",
-                  alignSelf: "center",
-                  textTransform: "uppercase",
-                  paddingVertical: 10
-                  }}>{team.name}</Text>
-              </TouchableOpacity>
-              <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-
-          <Text style={{fontSize:18, padding:10,alignSelf: 'flex-start'}}>Team Members:</Text>
-          {team.members.map((member, index)=>(
-            <Text key={index} style={styles.modalText}>{member}</Text>
-            ))}
-            <Text style={{fontSize:18, padding:10,alignSelf: 'flex-start'}}>Team Event Dates:</Text>
-            {team.events.map((event, index)=>(
-            <Text key={index} style={styles.modalText}>{event.date}</Text>
-            ))}
-
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
           </View>
         </View>
-      </Modal>
-              </View>
-            ))}
-        </View>
-      </View>
       </ScrollView>
-    </SafeAreaView>
-    </LinearGradient >
+      </SafeAreaView>
+   </LinearGradient >
   )
 
 }
