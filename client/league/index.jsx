@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 function League({ route, navigation }) {
   const { place_id } = route.params.league;
-  const { userProfile } = useContext(UsernameContext);
+  const { userProfile, userID } = useContext(UsernameContext);
 
   const [leagueDetails, setLeagueDetails] = useState({});
   const [userInLeague, setUserInLeague] = useState(false);
@@ -61,7 +61,12 @@ function League({ route, navigation }) {
             phoneNumber={leagueDetails.formatted_phone_number}
             website={leagueDetails.website}
           />
-          <Buttons userInLeague={userInLeague} userWishLeague={userWishLeague} />
+          <Buttons
+            userInLeague={userInLeague}
+            userWishLeague={userWishLeague}
+            userID={userID}
+            placeID={place_id}
+          />
         </>
       )}
     </LinearView>
