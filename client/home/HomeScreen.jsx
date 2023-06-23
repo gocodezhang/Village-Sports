@@ -7,10 +7,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import LinearView from '../sharedComponents/LinearView.jsx';
 
 import Discover from '../discover/index.jsx';
-import ChatSelection from '../Chat/index.jsx'
+import ChatSelection from '../Chat/index.jsx';
 import Home from './Home.jsx';
-import TempWatchList from './TempWatchList.jsx';
-import Profile from '../profile/index.jsx'
+import WishList from '../wishList/WishList.jsx';
+import Profile from '../profile/index.jsx';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
           />
         )
       }}/>
-      <Tab.Screen name="Saved" component={TempWatchList} options={{
+      <Tab.Screen name="Saved" component={WishList} options={{
         tabBarIcon: (tabInfo) => (
           <Ionicons
             name="bookmark-outline"

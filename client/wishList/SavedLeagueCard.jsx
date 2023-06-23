@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Pressable, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import TeamList from './TeamList.jsx';
+// import TeamList from './TeamList.jsx';
 
-export default function SavedLeagueCard({ navigation, league }) {
+export default function SavedLeagueCard({ navigation, league, picture }) {
   return (
     <View style={styles.card}>
       <ScrollView style={styles.scroll}>
@@ -12,9 +12,9 @@ export default function SavedLeagueCard({ navigation, league }) {
             <Ionicons name="bookmark" size={25} color={'#DCABDF'} style={{alignSelf: 'flex-end'}}/>
             <Text style={styles.headerText}>{league.name}</Text>
           </View>
-          <Image style={styles.image} source={{ uri: league.picture }} />
+          <Image style={styles.image} source={{ uri: picture }} />
         </Pressable>
-        <TeamList teams={league.teams} />
+        {/* <TeamList teams={league.teams} /> */}
       </ScrollView>
     </View>
   );
@@ -43,17 +43,21 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     marginBottom: 5,
+    // backgroundColor: 'blue',
+    // borderWidth: 1,
   },
   headerText: {
     position: 'absolute',
+    top: 0,
     padding: 5,
     width: '85%',
-    color: '#FFF'
+    color: '#FFF',
+    // backgroundColor: 'red',
   },
   button: {
     borderRadius: 10,
     padding: 10,
-    height: 150,
+    height: 170,
     justifyContent: 'flex-start',
   },
 });

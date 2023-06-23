@@ -7,7 +7,7 @@ import AboutMe from './AboutMe.jsx';
 
 function Profile() {
   const { userProfile } = useContext(UsernameContext);
-  console.log(userProfile);
+
   return (
     <LinearView>
       {Object.keys(userProfile).length === 0 ? null

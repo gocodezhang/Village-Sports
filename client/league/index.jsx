@@ -12,6 +12,8 @@ const styles = StyleSheet.create({
   name: {
     color: 'white',
     fontSize: 25,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
     textAlign: 'center',
     margin: 10,
   },
