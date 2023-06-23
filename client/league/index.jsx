@@ -41,7 +41,6 @@ function League({ route, navigation }) {
     };
     axios.get(url, { params })
       .then((result) => {
-        console.log(result.data.result);
         setLeagueDetails(result.data.result);
       })
       .catch((err) => (console.log(err)));

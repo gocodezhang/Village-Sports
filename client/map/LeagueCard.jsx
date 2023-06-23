@@ -54,10 +54,12 @@ const styles = StyleSheet.create({
 function LeagueCard({ navigation, currentLeague }) {
   return (
     <View style={styles.card}>
-      {/* <Image style={styles.logo} source={{
+      <Image
+        style={styles.logo}
+        source={{
           uri: currentLeague.picture,
         }}
-      /> */}
+      />
       <View style={styles.textContainer}>
         <Text style={styles.text}>
           <Text style={styles.header}>League: </Text>

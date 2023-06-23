@@ -5,16 +5,29 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
     borderWidth: 1,
+    borderColor: '#CEB992',
     margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '75%',
+    height: 200,
   },
   headerText: {
-    color: 'white',
+    color: '#f3de8a',
     fontSize: 20,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   photo: {
-    width: 50,
-    height: 50,
+    width: '50%',
+    height: '50%',
+    borderRadius: 10,
+    margin: 8,
+  },
+  address: {
+    color: 'white',
+    paddingHorizontal: 8,
+    fontSize: 12,
   },
 });
 
@@ -24,8 +37,8 @@ function RecommendCard({ league, navigation }) {
       <Text style={styles.headerText}>
         {league.name}
       </Text>
-      <Text>{league.rating}</Text>
-      <Text>{league.formatted_address}</Text>
+      <Image style={styles.photo} source={{ uri: league.picture }} />
+      <Text style={styles.address}>{league.formatted_address}</Text>
     </TouchableOpacity>
   );
 }
