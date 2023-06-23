@@ -2,9 +2,29 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
+const styles = StyleSheet.create({
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  starContainer: {
+    alignSelf: 'flex-start',
+    width: 122,
+  },
+  emptyStars: {
+    flexDirection: 'row',
+    position: 'absolute',
+  },
+  numberReview: {
+    color: 'white',
+  },
+});
+
+/* eslint "react/no-array-index-key":0 */
 function StarRating({ maxStar, rating, numberOfRating }) {
   const arr = new Array(maxStar).fill(1);
-  return (
+  return !rating ? null : (
     <View style={styles.ratingContainer}>
       <View style={styles.starContainer}>
         <View style={{
@@ -25,24 +45,5 @@ function StarRating({ maxStar, rating, numberOfRating }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  starContainer: {
-    alignSelf: 'flex-start',
-    width: 122,
-  },
-  emptyStars: {
-    flexDirection: 'row',
-    position: 'absolute',
-  },
-  numberReview: {
-    color: 'white',
-  },
-});
 
 export default StarRating;

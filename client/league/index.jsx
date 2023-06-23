@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import LinearView from '../sharedComponents/LinearView.jsx';
 import StarRating from './StarRating.jsx';
 import Details from './Details.jsx';
-import { db } from '../../firebase';
+import Buttons from './Buttons.jsx';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 
 const styles = StyleSheet.create({
   name: {
@@ -18,9 +19,18 @@ const styles = StyleSheet.create({
 
 function League({ route, navigation }) {
   const { place_id } = route.params.league;
+  const { userProfile } = useContext(UsernameContext);
+
   const [leagueDetails, setLeagueDetails] = useState({});
+  const [userInLeague, setUserInLeague] = useState(false);
+  const [userWishLeague, setUserWishLeague] = useState(false);
 
   useEffect(() => {
+    if (Object.keys(userProfile).length !== 0) {
+      const { currentLeagues, wishList } = userProfile;
+      setUserInLeague(currentLeagues.includes(place_id));
+      setUserWishLeague(wishList.includes(place_id));
+    }
     const url = 'https://maps.googleapis.com/maps/api/place/details/json';
     const params = {
       place_id,
@@ -47,9 +57,11 @@ function League({ route, navigation }) {
           />
           <Details
             address={leagueDetails.formatted_address}
-            hours={leagueDetails.opening_hours.weekday_text}
+            hours={leagueDetails.opening_hours ? leagueDetails.opening_hours.weekday_text : null}
             phoneNumber={leagueDetails.formatted_phone_number}
+            website={leagueDetails.website}
           />
+          <Buttons userInLeague={userInLeague} userWishLeague={userWishLeague} />
         </>
       )}
     </LinearView>
