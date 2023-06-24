@@ -47,7 +47,7 @@ function Recommend({ route, navigation }) {
             navigation={navigation}
           />
         ))}
-        <TouchableOpacity onPress={() => navigation.navigate('map', { rec })} style={styles.button}>
+        <TouchableOpacity onPress={() => navigation.navigate('Map', { rec })} style={styles.button}>
           <Text style={styles.buttonText}>Map View</Text>
         </TouchableOpacity>
       </ScrollView>

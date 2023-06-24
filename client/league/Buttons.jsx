@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity,
+  View, Text, StyleSheet, TouchableOpacity, Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, query, where, getDocs, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 6,
   },
   button: {
     flexDirection: 'row',
@@ -38,13 +39,20 @@ function Buttons({ userInLeague, userWishLeague, userID, placeID }) {
           wishList: arrayUnion(placeID),
         });
       })
-      .then(() => (console.log('successfully added')))
+      .then(() => {
+        console.log('successfully added');
+        Alert.alert('', 'Successfully saved');
+      })
       .catch((err) => (console.log(err)));
   }
-
+  console.log(userWishLeague);
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={AddWishList}>
+      <TouchableOpacity
+        style={{ ...styles.button, opacity: userWishLeague ? 0.5 : 1 }}
+        onPress={AddWishList}
+        disabled={userWishLeague}
+      >
         <Ionicons name="add" size={24} color="#CEB992" />
         <Text style={styles.text}>Save League</Text>
       </TouchableOpacity>

@@ -1,82 +1,78 @@
 import React, { useState, useEffect, useRef, useContext, useLayoutEffect } from 'react';
-import { View, Text, TextInput, Button, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native';
+import {
+  View, TextInput, KeyboardAvoidingView, ScrollView, StyleSheet, TouchableOpacity,
+} from 'react-native';
+import {
+  collection, query, orderBy, getDocs, addDoc, serverTimestamp, onSnapshot,
+} from 'firebase/firestore';
+import { Ionicons } from '@expo/vector-icons';
 import { db } from '../../firebase';
-import { collection, query, onSnapshot, orderBy, doc, getDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import LinearView from '../sharedComponents/LinearView.jsx'
-import UsernameContext from '../sharedComponents/UsernameContext.jsx'
-import ProfileButton from '../profile/profileButton.jsx'
+import Message from './Message.jsx';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
+// import ProfileButton from '../profile/profileButton.jsx'
 
-const ChatRoom = ({ navigation, route }) => {
-  const {username, setUsername} = useContext(UsernameContext);
+function ChatRoom({ navigation, route }) {
+  const { userID, userProfile } = useContext(UsernameContext);
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
-  var roomName = route.params.roomName;
+  const { roomName } = route.params;
   // console.log(roomName)
 
   const scrollViewRef = useRef();
 
-  React.useEffect(() => {
-    navigation.setOptions({
-      headerTitle: route.params.roomName,
-    });
-  }, [route.params.roomName]);
+  // React.useEffect(() => {
+  //   navigation.setOptions({
+  //     headerTitle: route.params.roomName,
+  //   });
+  // }, [route.params.roomName]);
   useEffect(() => {
-    const q = query(collection(db, "Chat Room", roomName, "messages"), orderBy("createdAt")); // Replace "messages" with your collection name
-    const unsubscribe = onSnapshot(q, snapshot => {
-      let messages = [];
-      snapshot.docs.forEach(doc => {
+    const q = query(collection(db, 'chatRooms', roomName, 'messages'), orderBy('createdAt'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const messages = [];
+      querySnapshot.forEach((doc) => {
         messages.push(doc.data());
       });
       setChatMessages(messages);
-    });
-
-    return () => unsubscribe(); // Unsubscribe to changes when the component unmounts
+    }, (err) => (console.log(err)));
+    // getDocs(q)
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       messages.push(doc.data());
+    //     });
+    //     return messages;
+    //   })
+    //   .then((results) => (setChatMessages(results)))
+    //   .catch((err) => (console.log(err)));
+    return () => (unsubscribe());
   }, []);
 
   useLayoutEffect(() => {
     setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: false });
-    }, 0)
+      scrollViewRef.current.scrollToEnd({ animated: false });
+    }, 0);
   }, [chatMessages]);
 
-  const onSend = async () => {
+  function onSend() {
     if (message.length > 0) {
-      await addDoc(collection(db, "Chat Room", roomName, "messages"), {
+      addDoc(collection(db, 'chatRooms', roomName, 'messages'), {
         message,
-        user_name: username, // Replace with the actual user name
+        uid: userID,
+        name: userProfile.name, // Replace with the actual user name
         createdAt: serverTimestamp(),
-      });
-      setMessage('');  // Clear the input field after the message is sent
+      })
+        .then(() => (setMessage('')))
+        .catch((err) => (console.log(err)));
     }
-  };
+  }
+
   return (
     <LinearView>
       <View style={styles.container}>
         <ScrollView ref={scrollViewRef} contentContainerStyle={styles.chatContainer}>
-          {chatMessages.map((chat, index) => {
-            if (chat.user_name === username) {
-              return (
-                <View key={index} style={styles.myMessageContainer}>
-                  <ProfileButton navigation={navigation} username={chat.user_name} component={(<Text style={styles.myUserName}>{chat.user_name}</Text>)} />
-
-                  <View style={styles.myMessageBubble}>
-                    <Text style={styles.myUserMessage}>{chat.message}</Text>
-                  </View>
-                </View>
-              );
-            } else {
-              return (
-                <View key={index} style={styles.messageContainer}>
-                  <ProfileButton navigation={navigation} username={chat.user_name} component={(<Text style={styles.userName}>{chat.user_name}</Text>)} />
-
-                  <View style={styles.messageBubble}>
-                    <Text style={styles.userMessage}>{chat.message}</Text>
-                  </View>
-                </View>
-              );
-            }
-          })
-          }
+          {chatMessages.map((chat, index) => (
+            <Message chat={chat} key={index} userID={userID} />
+          ))}
         </ScrollView>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.inputContainer}>
@@ -85,11 +81,13 @@ const ChatRoom = ({ navigation, route }) => {
             value={message}
             onChangeText={setMessage}
             placeholder="Type your message..."
-            placeholderTextColor="#FBE7AB"
+            placeholderTextColor="white"
             multiline
             autoFocus
           />
-          <Button title="Send" onPress={onSend} color="#FBE7AB" />
+          <TouchableOpacity onPress={onSend}>
+            <Ionicons name="send" size={24} color="#CEB992" />
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
     </LinearView>
@@ -99,62 +97,28 @@ const ChatRoom = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 10,
   },
   chatContainer: {
     flexGrow: 1,
     padding: 10,
+    margin: 10,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderTopWidth: 1,
-    // borderColor: 'gray',
+    borderColor: 'white',
     padding: 10,
   },
   input: {
     flex: 1,
-    color: '#FBE7AB',
+    color: 'white',
     marginRight: 10,
     borderWidth: 1,
-    // borderColor: 'gray',
+    borderColor: '#7e7f9a',
     borderRadius: 5,
     padding: 5,
-  },
-  messageContainer: {
-    alignSelf: 'flex-start',
-    justifyContent: 'left',
-    marginBottom: 20,
-  },
-  userName: {
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  messageBubble: {
-    borderWidth: 1,
-    // borderColor: '#ddd',
-    backgroundColor: '#CEB992',
-    borderRadius: 10,
-    padding: 10,
-  },
-  userMessage: {
-    marginTop: 5,
-  },
-  myMessageContainer: {
-    alignSelf: 'flex-end',  // Right-align these messages
-    marginBottom: 20,
-  },
-  myUserName: {
-    fontWeight: 'bold',
-    color: 'white',
-    alignSelf: 'flex-end',
-  },
-  myMessageBubble: {
-    borderWidth: 1,
-    // borderColor: '#ddd',
-    backgroundColor: '#add8e6',  // Light blue background
-    borderRadius: 10,
-    padding: 10,
-    alignSelf: 'flex-end',
   },
 });
 

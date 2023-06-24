@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { db } from '../../firebase';
@@ -13,9 +13,10 @@ import Announcements from './Announcements.jsx';
 import teams from '../sharedComponents/mockTeams.jsx';
 
 export default function Home({ navigation }) {
-  const [usersLeagues, setUsersLeagues] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const { userID, setUserProfile } = useContext(UsernameContext);
+  const {
+    userID, setUserProfile, usersLeagues, setUsersLeagues,
+  } = useContext(UsernameContext);
   const isFocused = useIsFocused();
 
   function getAnnouncements(leagues) {
@@ -29,33 +30,63 @@ export default function Home({ navigation }) {
   }
 
   useEffect(() => {
+    const url = 'https://maps.googleapis.com/maps/api/place/details/json';
     const q = query(collection(db, 'users'), where('uid', '==', userID));
-    getDocs(q)
-      .then((querySnapshot) => {
-        const user = querySnapshot.docs[0].data();
-        setUserProfile(user);
-        const { currentLeagues } = user;
 
-        const url = 'https://maps.googleapis.com/maps/api/place/details/json';
-        return Promise.all(currentLeagues.map((place_id) => {
-          const params = {
-            place_id,
-            key: Constants.expoConfig.extra.googleKey,
-            fields: 'name,formatted_address,geometry,place_id,formatted_phone_number,opening_hours,website,rating,user_ratings_total',
-          };
-          return axios.get(url, { params });
-        }));
-      })
-      .then((results) => {
-        const leagues = results.map((result, i) => {
-          const league = result.data.result;
-          league.teamInfo = teams[i];
-          return league;
-        });
-        setUsersLeagues(leagues);
-        getAnnouncements(leagues);
-      })
-      .catch((err) => (console.log(err)));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const user = querySnapshot.docs[0].data();
+      setUserProfile(user);
+      const { currentLeagues } = user;
+
+      Promise.all(currentLeagues.map((place_id) => {
+        const params = {
+          place_id,
+          key: Constants.expoConfig.extra.googleKey,
+          fields: 'name,formatted_address,geometry,place_id,formatted_phone_number,opening_hours,website,rating,user_ratings_total',
+        };
+        return axios.get(url, { params });
+      }))
+        .then((results) => {
+          const leagues = results.map((result, i) => {
+            const league = result.data.result;
+            league.teamInfo = teams[i];
+            return league;
+          });
+          console.log(leagues);
+          setUsersLeagues(leagues);
+          getAnnouncements(leagues);
+        })
+        .catch((err) => (console.log(err)));
+    }, (err) => (console.log(err)));
+
+    return () => (unsubscribe());
+    // getDocs(q)
+    //   .then((querySnapshot) => {
+    //     const user = querySnapshot.docs[0].data();
+    //     setUserProfile(user);
+    //     const { currentLeagues } = user;
+
+    //     const url = 'https://maps.googleapis.com/maps/api/place/details/json';
+    //     return Promise.all(currentLeagues.map((place_id) => {
+    //       const params = {
+    //         place_id,
+    //         key: Constants.expoConfig.extra.googleKey,
+    //         fields: 'name,formatted_address,geometry,place_id,formatted_phone_number,opening_hours,website,rating,user_ratings_total',
+    //       };
+    //       return axios.get(url, { params });
+    //     }));
+    //   })
+    //   .then((results) => {
+    //     const leagues = results.map((result, i) => {
+    //       const league = result.data.result;
+    //       league.teamInfo = teams[i];
+    //       return league;
+    //     });
+    //     console.log(leagues);
+    //     setUsersLeagues(leagues);
+    //     getAnnouncements(leagues);
+    //   })
+    //   .catch((err) => (console.log(err)));
   }, []);
 
   return (

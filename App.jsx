@@ -28,10 +28,11 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [userID, setUserID] = useState('');
   const [userProfile, setUserProfile] = useState({});
+  const [usersLeagues, setUsersLeagues] = useState([]);
 
   return (
 
-    <UsernameContext.Provider value={{userID, setUserID, userProfile, setUserProfile}}>
+    <UsernameContext.Provider value={{userID, setUserID, userProfile, setUserProfile, usersLeagues, setUsersLeagues}}>
       <NavigationContainer>
         <Stack.Navigator>
           {
@@ -42,8 +43,8 @@ export default function App() {
               </>
             ) : (
               <>
-                <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerTitle: NavStackHeader, headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 } }}/>
-                <Stack.Screen name="map" component={LeagueMap} options={({ navigation }) => (
+                <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: NavStackHeader, headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 } }}/>
+                <Stack.Screen name="Map" component={LeagueMap} options={({ navigation }) => (
                   {
                     headerTitle: NavStackHeader,
                     headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 },
@@ -53,8 +54,8 @@ export default function App() {
                 <Stack.Screen name="League" component={League} options={{ headerTitle: NavStackHeader, headerTintColor: '#ffffff', headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 } }} />
                 <Stack.Screen name="Recommend" component={Recommend} options={{ headerTitle: NavStackHeader, headerTintColor: '#ffffff', headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 } }} />
                 <Stack.Screen name="chat" component={ChatSelection} />
-                <Stack.Screen name="Profile" component={Profile} initialParams={{ username: "Naruto" }} />
-                <Stack.Screen name="chatRoom" component={ChatRoom} options={{ headerTitle: NavStackHeader, headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 }, headerTintColor: '#D0BF9F' }} />
+                <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="chatRoom" component={ChatRoom} options={{ headerTitle: NavStackHeader, headerStyle: { backgroundColor: '#272838', borderBottomWidth: 0 }, headerTintColor: '#ffffff' }} />
               </>
             )
           }
