@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import LinearView from '../sharedComponents/LinearView.jsx';
 import RecommendCard from './RecommendCard.jsx';
 import pictures from '../sharedComponents/mockPictures.jsx';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 
 function Recommend({ route, navigation }) {
+  const { userProfile } = useContext(UsernameContext);
   const [rec, setRec] = useState([]);
   const { selected } = route.params;
 
@@ -16,12 +18,12 @@ function Recommend({ route, navigation }) {
 
   useEffect(() => {
     const keywords = selected.join(' leagues or ');
-    console.log(`local ${keywords} leagues in zipcode 95035`);
     const url = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
     const params = {
-      query: `local ${keywords} leagues in zipcode 95035`,
+      query: `local ${keywords} leagues`,
       radius: 5000,
       key: Constants.expoConfig.extra.googleKey,
+      location: `${userProfile.location.latitude},${userProfile.location.longitude}`,
     };
 
     axios.get(url, { params })

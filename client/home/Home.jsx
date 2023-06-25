@@ -52,7 +52,6 @@ export default function Home({ navigation }) {
             league.teamInfo = teams[i];
             return league;
           });
-          console.log(leagues);
           setUsersLeagues(leagues);
           getAnnouncements(leagues);
         })

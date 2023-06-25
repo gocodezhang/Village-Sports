@@ -1,51 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
-import { Ionicons } from '@expo/vector-icons';
-import * as Location from 'expo-location';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import CustomMarker from './CustomMarker.jsx';
 import LeagueCard from './LeagueCard.jsx';
+import ContinueSearch from './ContinueSearch.jsx';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 
 export default function LeagueMap({ navigation, route }) {
-  const [displayID, setDisplayID] = useState('');
-  const [location, setLocation] = useState({
-    // latitude: 37.6052256618502,
-    // longitude: -122.19287374222353,
-    latitude: 37.91789984098183,
-    longitude: -109.695925503991,
-  });
-
   const { rec } = route.params;
+  const { userProfile } = useContext(UsernameContext);
 
-  function findCurrentLeague(currentID) {
-    for (let i = 0; i < rec.length; i++) {
-      if (rec[i].place_id === currentID) {
-        return rec[i];
-      }
+  const [displayLeague, setDisplayLeague] = useState('');
+  const [movingLocation, setMovingLocation] = useState({});
+  const [leaguesOnMap, setLeaguesOnMap] = useState(rec);
+  const [search, setSearch] = useState(false);
+
+  let counter = 0;
+  function userMoveMap(Region) {
+    if (counter > 0) {
+      const { latitude, longitude } = Region;
+      setMovingLocation({
+        latitude,
+        longitude,
+      });
+      setSearch(true);
     }
-    return '';
+    counter += 1;
   }
-
-  const currentLeague = findCurrentLeague(displayID);
-
-  useEffect(() => {
-    Location.requestForegroundPermissionsAsync()
-      .then(({ status }) => {
-        if (status === 'granted') {
-          return Location.getCurrentPositionAsync();
-        }
-      })
-      .then((result) => {
-        if (result) {
-          const { coords } = result;
-          setLocation({
-            latitude: coords.latitude,
-            longitude: coords.longitude,
-          });
-        }
-      })
-      .catch((err) => (console.log(err)));
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -53,22 +34,31 @@ export default function LeagueMap({ navigation, route }) {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         region={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 1,
-          longitudeDelta: 1,
+          latitude: userProfile.location.latitude,
+          longitude: userProfile.location.longitude,
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
         }}
+        onRegionChangeComplete={userMoveMap}
       >
-        {rec.map((league) => (
+        {leaguesOnMap.map((league) => (
           <CustomMarker
             key={league.place_id}
             league={league}
-            displayID={displayID}
-            setDisplayID={setDisplayID}
+            displayLeague={displayLeague}
+            setDisplayLeague={setDisplayLeague}
           />
         ))}
       </MapView>
-      {currentLeague ? <LeagueCard currentLeague={currentLeague} navigation={navigation} /> : null}
+      {displayLeague ? <LeagueCard currentLeague={displayLeague} navigation={navigation} /> : null}
+      {search
+        ? (
+          <ContinueSearch
+            movingLocation={movingLocation}
+            setLeaguesOnMap={setLeaguesOnMap}
+            setSearch={setSearch}
+          />
+        ) : null}
     </View>
   );
 }
@@ -76,9 +66,11 @@ export default function LeagueMap({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
   },
   map: {
     width: '100%',
     height: '100%',
+    zIndex: 1,
   },
 });

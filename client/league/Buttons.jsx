@@ -45,7 +45,6 @@ function Buttons({ userInLeague, userWishLeague, userID, placeID }) {
       })
       .catch((err) => (console.log(err)));
   }
-  console.log(userWishLeague);
   return (
     <View style={styles.container}>
       <TouchableOpacity

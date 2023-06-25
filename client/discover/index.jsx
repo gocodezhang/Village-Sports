@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, TouchableOpacity, Button, StyleSheet, SafeAreaView } from 'react-native';
-import RenderInterest from './RenderInterest.jsx'
-import tw from 'tailwind-react-native-classnames'
+import * as Location from 'expo-location';
+import tw from 'tailwind-react-native-classnames';
 import { LinearGradient } from 'expo-linear-gradient';
+import { collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import RenderInterest from './RenderInterest.jsx';
+import UsernameContext from '../sharedComponents/UsernameContext.jsx';
 
 const interests = [
   {
@@ -17,9 +21,45 @@ const interests = [
   },
 ];
 
+function Discover({ navigation }) {
+  const {
+    userID, userProfile, selected, setSelected,
+  } = useContext(UsernameContext);
+  // const [location, setLocation] = useState({
+  //   // latitude: 37.6052256618502,
+  //   // longitude: -122.19287374222353,
+  //   latitude: 37.91789984098183,
+  //   longitude: -109.695925503991,
+  // });
 
-const Discover = ({navigation}) => {
-  const [selected, setSelected] = useState([]);
+  useEffect(() => {
+    if (Object.keys(userProfile.location).length === 0) {
+      Location.requestForegroundPermissionsAsync()
+        .then(({ status }) => {
+          if (status === 'granted') {
+            return Location.getCurrentPositionAsync();
+          }
+        })
+        .then((result) => {
+          if (result) {
+            const { coords } = result;
+            const q = query(collection(db, 'users'), where('uid', '==', userID));
+            return getDocs(q)
+              .then((querySnapshot) => {
+                const userDocRef = querySnapshot.docs[0].ref;
+                return updateDoc(userDocRef, {
+                  location: {
+                    latitude: coords.latitude,
+                    longitude: coords.longitude,
+                  },
+                });
+              });
+          }
+        })
+        .then(() => (console.log('Saved user location')))
+        .catch((err) => (console.log(err)));
+    }
+  }, []);
 
   return (
     <LinearGradient style={[styles.gradient]} colors={["#272838", "rgba(206, 185, 146, 0.35)"]}>
@@ -37,7 +77,7 @@ const Discover = ({navigation}) => {
       </SafeAreaView>
     </LinearGradient>
   );
-};
+}
 
 const styles = StyleSheet.create({
   gradient: {

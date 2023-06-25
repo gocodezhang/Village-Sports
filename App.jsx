@@ -29,10 +29,14 @@ export default function App() {
   const [userID, setUserID] = useState('');
   const [userProfile, setUserProfile] = useState({});
   const [usersLeagues, setUsersLeagues] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   return (
 
-    <UsernameContext.Provider value={{userID, setUserID, userProfile, setUserProfile, usersLeagues, setUsersLeagues}}>
+    <UsernameContext.Provider value={{
+      userID, setUserID, userProfile, setUserProfile, usersLeagues, setUsersLeagues,
+      selected, setSelected,
+    }}>
       <NavigationContainer>
         <Stack.Navigator>
           {

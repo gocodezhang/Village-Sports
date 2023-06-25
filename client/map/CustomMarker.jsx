@@ -3,10 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 
-function CustomMarker({ league, displayID, setDisplayID }) {
+function CustomMarker({ league, displayLeague, setDisplayLeague }) {
   const [markerColor, setMarkerColor] = useState('black');
   function pressHandler() {
-    setDisplayID(displayID === league.place_id ? '' : league.place_id);
+    setDisplayLeague(displayLeague.place_id === league.place_id ? '' : league);
   }
 
   return (
@@ -18,7 +18,7 @@ function CustomMarker({ league, displayID, setDisplayID }) {
       opacity={1}
       onPress={pressHandler}
     >
-      <Ionicons name="ios-location-sharp" size={28} color={displayID === league.place_id ? 'red' : 'black'} />
+      <Ionicons name="ios-location-sharp" size={28} color={displayLeague.place_id === league.place_id ? 'red' : 'black'} />
     </Marker>
   );
 }
