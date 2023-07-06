@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 function League({ route, navigation }) {
-  const { place_id } = route.params.league;
+  const { place_id, name } = route.params.league;
   const { userProfile, userID } = useContext(UsernameContext);
 
   const [leagueDetails, setLeagueDetails] = useState({});
@@ -67,6 +67,8 @@ function League({ route, navigation }) {
             userWishLeague={userWishLeague}
             userID={userID}
             placeID={place_id}
+            roomName={name}
+            navigation={navigation}
           />
         </>
       )}

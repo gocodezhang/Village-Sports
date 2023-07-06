@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Buttons({ userInLeague, userWishLeague, userID, placeID }) {
+function Buttons({ userInLeague, userWishLeague, userID, placeID, navigation, roomName }) {
   function AddWishList() {
     const q = query(collection(db, 'users'), where('uid', '==', userID));
     getDocs(q)
@@ -57,7 +57,7 @@ function Buttons({ userInLeague, userWishLeague, userID, placeID }) {
       </TouchableOpacity>
       {userInLeague
         ? (
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => (navigation.navigate('chatRoom', { roomName }))}>
             <Ionicons name="chatbox" size={24} color="#CEB992" />
             <Text style={styles.text}>Go to Chat</Text>
           </TouchableOpacity>
