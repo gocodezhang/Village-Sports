@@ -33,9 +33,8 @@
         <li><a href="#database-and-api">Database & API</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#team">Team</a></li>
   </ol>
 </details>
 
@@ -82,7 +81,7 @@
 Please note below sub-sections for futher details of each indiviual components
 
 ### Log In
-The component contains two sub-components: 1. *Log in* 2. *Sign up*.
+The component contains two sub-components: *1. Log in* *2. Sign up*.
 <p>
   <img src="assets/Login.png" width="250">
   <img src="assets/Signup.png" width="250">
@@ -95,7 +94,7 @@ The component contains two sub-components: 1. *Log in* 2. *Sign up*.
 
 ### Discover and Map
 
-**Discover** contains two sub-components: 1. *Discover* 2. *Recommend* where *Discover allows users to select their interests and *Recommend* would generate a list of recommended leagues based on users' interests and geo-locations
+**Discover** contains two sub-components: *1. Discover* *2. Recommend* where *Discover* allows users to select their interests and *Recommend* would generate a list of recommended leagues based on users' interests and geo-locations
 <p>
   <img src="assets/Discover.png" width="250">
   <img src="assets/Recommend.png" width="250">
@@ -108,6 +107,7 @@ The component contains two sub-components: 1. *Log in* 2. *Sign up*.
 </p>
 
 ### Chat
+**Chat** allows users to receive/send text messages within all people in a league
 
 <p>
   <img src="assets/ChatSelection.png" width="250">
@@ -115,6 +115,7 @@ The component contains two sub-components: 1. *Log in* 2. *Sign up*.
 </p>
 
 ### League
+**League** contains detailed league information with the buttons to save the league to wishlist and go to the chat of the league (when applicable)
 
 <p>
   <img src="assets/League.png" width="250">
@@ -161,7 +162,7 @@ Map, WishList and Post enhancement [(Jay Zhang)](https://www.linkedin.com/in/jay
 League [(Sahid Adin)](https://www.linkedin.com/in/sahidadin/)\
 Chat [(Michael Del Pape)](https://www.linkedin.com/in/delpapemichael/)
 
-**Note**: Post enhancement includes 1. building database to support the application 2. using Google Map API instead of mock data 3. reformatting the profile, chat, discover components
+**Note**: Post enhancement includes *1. building database to support the application* *2. using Google Map API instead of mock data* *3. reformatting the profile, chat, discover components*
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
