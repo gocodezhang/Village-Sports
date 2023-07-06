@@ -82,61 +82,86 @@
 Please note below sub-sections for futher details of each indiviual components
 
 ### Log In
-The component contains of two sub-components: 1. Log in 2. Sign up.
+The component contains two sub-components: 1. *Log in* 2. *Sign up*.
 <p>
   <img src="assets/Login.png" width="250">
   <img src="assets/Signup.png" width="250">
 </p>
 
 ### Home
-
+<p>
+  <img src="assets/Home.png" width="250">
+</p>
 
 ### Discover and Map
 
+**Discover** contains two sub-components: 1. *Discover* 2. *Recommend* where *Discover allows users to select their interests and *Recommend* would generate a list of recommended leagues based on users' interests and geo-locations
+<p>
+  <img src="assets/Discover.png" width="250">
+  <img src="assets/Recommend.png" width="250">
+</p>
+
+**Map** would display the recommended leagues as markers on the map. When users move the map, users can search nearby leagues based on the new location
+<p>
+  <img src="assets/Map.png" width="250">
+  <img src="assets/Map-search.png" width="250">
+</p>
+
 ### Chat
+
+<p>
+  <img src="assets/ChatSelection.png" width="250">
+  <img src="assets/Chatmessage.png" width="250">
+</p>
 
 ### League
 
+<p>
+  <img src="assets/League.png" width="250">
+</p>
+
 ### Profile
 
+<p>
+  <img src="assets/Profile.png" width="250">
+</p>
+
 ### WishList
+
+<p>
+  <img src="assets/Wishlist.png" width="250">
+</p>
 
 ### Database and API
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+- [ ] Find alternative API that has more detailed leagues information including teams and events
+- [ ] Enable delete operations (e.g remove wishlist, remove interests from the user profile)
+- [ ] Create a seperate flow for signup users
+    - [ ] User info form
+    - [ ] Discover local leagues post signup
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTACT -->
-## Contact
+## Team
+Below are the team members and the corresponding components that the team member is responsible for.
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Login [(Fox Seo)](https://www.linkedin.com/in/jinmyeongseo/)\
+Home [(Rachel Miller)](https://www.linkedin.com/in/rachel-miller-mlr/)\
+Profile [(Benji Cardon)](https://www.linkedin.com/in/benjamin-cardon/)\
+Discover [(Naru Sadakuni)](https://www.linkedin.com/in/narusadakuni/)\
+Map, WishList and Post enhancement [(Jay Zhang)](https://www.linkedin.com/in/jay-zhang1995/)\
+League [(Sahid Adin)](https://www.linkedin.com/in/sahidadin/)\
+Chat [(Michael Del Pape)](https://www.linkedin.com/in/delpapemichael/)
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+**Note**: Post enhancement includes 1. building database to support the application 2. using Google Map API instead of mock data 3. reformatting the profile, chat, discover components
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
