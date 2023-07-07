@@ -135,7 +135,7 @@ The component contains two sub-components: *1. Log in* *2. Sign up*.
 
 ### Database and API
 
-**The database** is built with google firestore. The database contains two collections *1. users* *2. chatRooms*
+**The database** is built with Google firestore. The database contains two collections *1. users* *2. chatRooms*
 * *users* contains a list of documents including user_id,user name, profile picture, location, interests, about_me, current leagues that the user registered, leagues in wishlist
 * *chatRooms* contains multiple chat rooms where each room has a collection of messages
 
